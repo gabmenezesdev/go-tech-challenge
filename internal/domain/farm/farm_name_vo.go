@@ -18,6 +18,6 @@ func NewFarmName(name string) (FarmName, error) {
 	}, nil
 }
 
-func (n FarmName) Value() string {
+func (n *FarmName) Value() string {
 	return n.value
 }
