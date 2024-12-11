@@ -1,6 +1,7 @@
 package farm
 
 import (
+	"errors"
 	"time"
 )
 
@@ -30,6 +31,10 @@ func createFarm(name string, landArea float64, unit, address string, crops []str
 		return nil, err
 	}
 
+	if len(address) == 0 {
+		return nil, errors.New("Invalid Address")
+	}
+
 	return &Farm{
 		name:      farmName,
 		landArea:  newLandArea,
@@ -40,7 +45,6 @@ func createFarm(name string, landArea float64, unit, address string, crops []str
 	}, nil
 }
 
-// static factory method
 func NewFarm(name string, landArea float64, unit, address string, crops []string) (*Farm, error) {
 	return createFarm(name, landArea, unit, address, crops, time.Now())
 }
