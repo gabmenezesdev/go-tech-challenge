@@ -6,10 +6,9 @@ import (
 )
 
 func TestNewFarm(t *testing.T) {
-	crops := []string{"corn", "wheat"}
 
 	t.Run("Create Farm Successfully", func(t *testing.T) {
-		farm, err := NewFarm("MyFarm", 100.5, "acre", "123 Farm Address", crops)
+		farm, err := NewFarm("MyFarm", 100.5, "acre", "123 Farm Address")
 		if err != nil {
 			t.Fatalf("Expected no error, got: %v", err)
 		}
@@ -25,21 +24,21 @@ func TestNewFarm(t *testing.T) {
 	})
 
 	t.Run("Fail to Create Farm with Empty Name", func(t *testing.T) {
-		_, err := NewFarm("", 100.5, "acre", "123 Farm Address", crops)
+		_, err := NewFarm("", 100.5, "acre", "123 Farm Address")
 		if err == nil {
 			t.Fatal("Expected error for empty name, got none")
 		}
 	})
 
 	t.Run("Fail to Create Farm with Invalid Unit", func(t *testing.T) {
-		_, err := NewFarm("MyFarm", 100.5, "invalid_unit", "123 Farm Address", crops)
+		_, err := NewFarm("MyFarm", 100.5, "invalid_unit", "123 Farm Address")
 		if err == nil {
 			t.Fatal("Expected error for invalid unit, got none")
 		}
 	})
 
 	t.Run("Fail to Create Farm with Empty Address", func(t *testing.T) {
-		_, err := NewFarm("MyFarm", 100.5, "acre", "", crops)
+		_, err := NewFarm("MyFarm", 100.5, "acre", "")
 		if err == nil {
 			t.Fatal("Expected error for empty address, got none")
 		}

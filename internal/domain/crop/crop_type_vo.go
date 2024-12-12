@@ -22,3 +22,7 @@ func NewCropType(crop string) (CropType, error) {
 		return CropType{}, errors.New("Crop is invalid")
 	}
 }
+
+func (c CropType) Value() string {
+	return c.value
+}

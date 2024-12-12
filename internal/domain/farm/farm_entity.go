@@ -43,8 +43,8 @@ func createFarm(name string, landArea float64, unit, address string, crops []str
 	}, nil
 }
 
-func NewFarm(name string, landArea float64, unit, address string, crops []string) (*Farm, error) {
-	return createFarm(name, landArea, unit, address, crops)
+func NewFarm(name string, landArea float64, unit, address string) (*Farm, error) {
+	return createFarm(name, landArea, unit, address, []string{})
 }
 
 func NewFarmWithID(farmId int64, name string, landArea float64, unit, address string, crops []string, createdAt time.Time) (*Farm, error) {

@@ -7,32 +7,32 @@ import (
 	farm "github.com/gabmenezesdev/go-tech-challenge/internal/domain/farm"
 	"github.com/gabmenezesdev/go-tech-challenge/internal/infra/database"
 	"go.mongodb.org/mongo-driver/bson"
-)
-
-var (
-	FARM_SCHEMA = "farms"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type FarmRepositoryMongoAdapter struct{}
 
-func (f FarmRepositoryMongoAdapter) CreateFarm(u *farm.Farm) error {
+func (f FarmRepositoryMongoAdapter) CreateFarm(farm *farm.Farm) (string, error) {
 	fmt.Println("entrou aqui")
 	client, err := database.InitConnection()
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	_, err = client.Collection(FARM_SCHEMA).InsertOne(context.Background(), bson.M{
-		"name":      u.GetName(),
-		"land_area": u.GetLandArea(),
-		"unit":      u.GetUnit(),
-		"address":   u.GetAddress(),
+	res, err := client.Collection(FARM_SCHEMA).InsertOne(context.Background(), bson.M{
+		"name":      farm.GetName(),
+		"land_area": farm.GetLandArea(),
+		"unit":      farm.GetUnit(),
+		"address":   farm.GetAddress(),
+		"crops":     []interface{}{},
 	})
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
+	id := res.InsertedID
+
+	return id.(primitive.ObjectID).Hex(), nil
 }
 
 func (f FarmRepositoryMongoAdapter) DeleteFarmById(id int64) error {

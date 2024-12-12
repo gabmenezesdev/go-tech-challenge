@@ -13,6 +13,12 @@ type Crop struct {
 	isInsured   bool
 }
 
+type CropDto struct {
+	CropType    string
+	IsIrrigated bool
+	IsInsured   bool
+}
+
 func NewCrop(cropType string, isIrrigated bool, isInsured bool) (*Crop, error) {
 	newCropType, err := NewCropType(cropType)
 	if err != nil {
@@ -38,5 +44,16 @@ func NewCropWithId(cropId int64, cropType string, isIrrigated bool, isInsured bo
 		isIrrigated: isIrrigated,
 		isInsured:   isInsured,
 	}, nil
+}
 
+func (c Crop) GetCropType() string {
+	return c.cropType.Value()
+}
+
+func (c Crop) GetIsIrrigated() bool {
+	return c.isIrrigated
+}
+
+func (c Crop) GetIsInsured() bool {
+	return c.isInsured
 }
