@@ -6,7 +6,6 @@ import (
 
 func TestNewCrop(t *testing.T) {
 	t.Run("Valid crop creation", func(t *testing.T) {
-		// Testando criação válida de uma cultura
 		crop, err := NewCrop(Rice, true, false)
 		if err != nil {
 			t.Errorf("Expected no error, but got %v", err)
@@ -26,7 +25,6 @@ func TestNewCrop(t *testing.T) {
 	})
 
 	t.Run("Invalid crop type", func(t *testing.T) {
-		// Testando criação com tipo de cultura inválido
 		_, err := NewCrop("INVALID_CROP", true, true)
 		if err == nil {
 			t.Error("Expected error for invalid crop type, but got none")
@@ -36,7 +34,6 @@ func TestNewCrop(t *testing.T) {
 
 func TestNewCropWithId(t *testing.T) {
 	t.Run("Valid crop creation with ID", func(t *testing.T) {
-		// Testando criação válida de uma cultura com ID
 		cropId := int64(42)
 		crop, err := NewCropWithId(cropId, Corn, false, true)
 		if err != nil {

@@ -1,5 +1,11 @@
 package crop
 
+// Although the crop currently doesn't fully satisfy the second rule of an entity, I believe it has the potential to be a domain entity.
+
+// Unique Identifier: The crop has a unique id.
+// Independent Lifecycle: While not fully independent now, it can develop its own lifecycle with independent changes.
+// Business Rules: It has or could gain specific business rules tied to its logic.
+
 type Crop struct {
 	id          int64
 	cropType    CropType

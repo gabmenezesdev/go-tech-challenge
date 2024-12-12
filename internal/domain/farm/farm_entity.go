@@ -6,16 +6,15 @@ import (
 )
 
 type Farm struct {
-	id        int64
-	name      FarmName
-	landArea  LandArea
-	unit      UnitOfMeasure
-	address   string
-	crops     []string
-	createdAt time.Time
+	id       int64
+	name     FarmName
+	landArea LandArea
+	unit     UnitOfMeasure
+	address  string
+	crops    []string
 }
 
-func createFarm(name string, landArea float64, unit, address string, crops []string, createdAt time.Time) (*Farm, error) {
+func createFarm(name string, landArea float64, unit, address string, crops []string) (*Farm, error) {
 	farmName, err := NewFarmName(name)
 	if err != nil {
 		return nil, err
@@ -36,21 +35,20 @@ func createFarm(name string, landArea float64, unit, address string, crops []str
 	}
 
 	return &Farm{
-		name:      farmName,
-		landArea:  newLandArea,
-		unit:      unitOfMeasure,
-		address:   address,
-		crops:     crops,
-		createdAt: createdAt,
+		name:     farmName,
+		landArea: newLandArea,
+		unit:     unitOfMeasure,
+		address:  address,
+		crops:    crops,
 	}, nil
 }
 
 func NewFarm(name string, landArea float64, unit, address string, crops []string) (*Farm, error) {
-	return createFarm(name, landArea, unit, address, crops, time.Now())
+	return createFarm(name, landArea, unit, address, crops)
 }
 
 func NewFarmWithID(farmId int64, name string, landArea float64, unit, address string, crops []string, createdAt time.Time) (*Farm, error) {
-	farm, err := createFarm(name, landArea, unit, address, crops, createdAt)
+	farm, err := createFarm(name, landArea, unit, address, crops)
 	if err != nil {
 		return nil, err
 	}
@@ -62,10 +60,18 @@ func (f *Farm) GetID() int64 {
 	return f.id
 }
 
-func (f *Farm) GetCreatedAt() time.Time {
-	return f.createdAt
+func (f *Farm) GetName() string {
+	return f.name.Value()
 }
 
-func (f *Farm) Name() string {
-	return f.name.Value()
+func (f *Farm) GetLandArea() float64 {
+	return f.landArea.Value()
+}
+
+func (f *Farm) GetUnit() string {
+	return f.unit.Value()
+}
+
+func (f *Farm) GetAddress() string {
+	return f.address
 }

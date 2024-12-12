@@ -1,11 +1,5 @@
 package farm
 
-// if landArea <= 0 {
-// 	return LandArea{}, errors.New("landArea must be greater than 0")
-// }
-
-// return LandArea{value: landArea}, nil
-
 import (
 	"testing"
 )

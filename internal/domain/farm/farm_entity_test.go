@@ -14,17 +14,14 @@ func TestNewFarm(t *testing.T) {
 			t.Fatalf("Expected no error, got: %v", err)
 		}
 
-		if farm.Name() != "MyFarm" {
-			t.Errorf("Expected farm name to be 'MyFarm', got: %v", farm.Name())
+		if farm.GetName() != "MyFarm" {
+			t.Errorf("Expected farm name to be 'MyFarm', got: %v", farm.GetName())
 		}
 
 		if farm.GetID() != 0 {
 			t.Errorf("Expected farm ID to be 0, got: %v", farm.GetID())
 		}
 
-		if farm.GetCreatedAt().IsZero() {
-			t.Errorf("Expected createdAt to be set, but it is zero")
-		}
 	})
 
 	t.Run("Fail to Create Farm with Empty Name", func(t *testing.T) {
@@ -61,10 +58,6 @@ func TestNewFarmWithID(t *testing.T) {
 
 		if farm.GetID() != 1 {
 			t.Errorf("Expected farm ID to be 1, got: %v", farm.GetID())
-		}
-
-		if !farm.GetCreatedAt().Equal(createdAt) {
-			t.Errorf("Expected createdAt to be %v, got: %v", createdAt, farm.GetCreatedAt())
 		}
 	})
 
