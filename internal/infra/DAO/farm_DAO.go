@@ -15,7 +15,7 @@ import (
 
 type FarmDaoMongoDB struct{}
 
-func (f FarmDaoMongoDB) GetAllFarms(skip int, perPage int) ([]farm.FarmDto, error) {
+func (f FarmDaoMongoDB) GetAllFarms(skip int, perPage int, filters FarmFilters) ([]farm.FarmDto, error) {
 	client, err := database.InitConnection()
 	if err != nil {
 		return []farm.FarmDto{}, err

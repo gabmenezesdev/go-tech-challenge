@@ -15,8 +15,8 @@ func NewGetAllFarmsUseCase(farmDao dao.FarmDao) (*GetAllFarm, error) {
 	}, nil
 }
 
-func (gaf *GetAllFarm) Execute(skip int, perPage int) ([]farm.FarmDto, error) {
-	allFarms, err := gaf.farmDao.GetAllFarms(skip, perPage)
+func (gaf *GetAllFarm) Execute(skip int, perPage int, filters dao.FarmFilters) ([]farm.FarmDto, error) {
+	allFarms, err := gaf.farmDao.GetAllFarms(skip, perPage, filters)
 	if err != nil {
 		return []farm.FarmDto{}, err
 	}
