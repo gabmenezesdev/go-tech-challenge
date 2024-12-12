@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"fmt"
 
 	farm "github.com/gabmenezesdev/go-tech-challenge/internal/domain/farm"
 	"github.com/gabmenezesdev/go-tech-challenge/internal/infra/database"
@@ -13,7 +12,6 @@ import (
 type FarmRepositoryMongoAdapter struct{}
 
 func (f FarmRepositoryMongoAdapter) CreateFarm(farm *farm.Farm) (string, error) {
-	fmt.Println("entrou aqui")
 	client, err := database.InitConnection()
 	if err != nil {
 		return "", err
@@ -35,10 +33,45 @@ func (f FarmRepositoryMongoAdapter) CreateFarm(farm *farm.Farm) (string, error) 
 	return id.(primitive.ObjectID).Hex(), nil
 }
 
-func (f FarmRepositoryMongoAdapter) DeleteFarmById(id int64) error {
+func (f FarmRepositoryMongoAdapter) DeleteFarmById(farmId string) error {
+	client, err := database.InitConnection()
+	if err != nil {
+		return err
+	}
+	objectID, err := primitive.ObjectIDFromHex(farmId)
+	if err != nil {
+		return err
+	}
+
+	filter := bson.M{"_id": objectID}
+
+	_, err = client.Collection(FARM_SCHEMA).DeleteOne(context.Background(), filter)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
-func (f FarmRepositoryMongoAdapter) GetFarmById(id int64) error {
-	return nil
+func (f FarmRepositoryMongoAdapter) GetFarmById(farmId string) (farm.Farm, error) {
+	client, err := database.InitConnection()
+	if err != nil {
+		return farm.Farm{}, err
+	}
+	objectID, err := primitive.ObjectIDFromHex(farmId)
+	if err != nil {
+		return farm.Farm{}, err
+	}
+
+	filter := bson.M{"_id": objectID}
+
+	var farmData farm.Farm
+	err = client.Collection(FARM_SCHEMA).FindOne(context.Background(), filter).Decode(&farmData)
+	if err != nil {
+		if err != nil {
+			return farm.Farm{}, err
+		}
+	}
+
+	return farmData, nil
 }

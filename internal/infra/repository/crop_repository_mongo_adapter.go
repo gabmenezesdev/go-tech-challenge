@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"fmt"
 
 	crop "github.com/gabmenezesdev/go-tech-challenge/internal/domain/crop"
 	"github.com/gabmenezesdev/go-tech-challenge/internal/infra/database"
@@ -24,9 +23,6 @@ func (c CropRepositoryMongoAdapter) CreateCrop(crop *crop.Crop, farmId string) e
 	}
 
 	objectID, err := primitive.ObjectIDFromHex(farmId)
-
-	fmt.Println("crop")
-	fmt.Println(crop)
 
 	// I decided to do a addToSet because different from sql mongoDb recomends to store it nested in one schema
 	filter := bson.M{"_id": objectID}
