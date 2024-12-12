@@ -5,6 +5,7 @@ import (
 
 	farm "github.com/gabmenezesdev/go-tech-challenge/internal/domain/farm"
 	"github.com/gabmenezesdev/go-tech-challenge/internal/infra/database"
+	shared "github.com/gabmenezesdev/go-tech-challenge/internal/shared"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -17,7 +18,7 @@ func (f FarmRepositoryMongoAdapter) CreateFarm(farm *farm.Farm) (string, error) 
 		return "", err
 	}
 
-	res, err := client.Collection(FARM_SCHEMA).InsertOne(context.Background(), bson.M{
+	res, err := client.Collection(shared.FARM_SCHEMA).InsertOne(context.Background(), bson.M{
 		"name":      farm.GetName(),
 		"land_area": farm.GetLandArea(),
 		"unit":      farm.GetUnit(),
@@ -45,7 +46,7 @@ func (f FarmRepositoryMongoAdapter) DeleteFarmById(farmId string) error {
 
 	filter := bson.M{"_id": objectID}
 
-	_, err = client.Collection(FARM_SCHEMA).DeleteOne(context.Background(), filter)
+	_, err = client.Collection(shared.FARM_SCHEMA).DeleteOne(context.Background(), filter)
 	if err != nil {
 		return err
 	}
@@ -66,7 +67,7 @@ func (f FarmRepositoryMongoAdapter) GetFarmById(farmId string) (farm.Farm, error
 	filter := bson.M{"_id": objectID}
 
 	var farmData farm.Farm
-	err = client.Collection(FARM_SCHEMA).FindOne(context.Background(), filter).Decode(&farmData)
+	err = client.Collection(shared.FARM_SCHEMA).FindOne(context.Background(), filter).Decode(&farmData)
 	if err != nil {
 		if err != nil {
 			return farm.Farm{}, err

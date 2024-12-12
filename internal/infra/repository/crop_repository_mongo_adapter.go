@@ -5,13 +5,10 @@ import (
 
 	crop "github.com/gabmenezesdev/go-tech-challenge/internal/domain/crop"
 	"github.com/gabmenezesdev/go-tech-challenge/internal/infra/database"
+	shared "github.com/gabmenezesdev/go-tech-challenge/internal/shared"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
-)
-
-var (
-	FARM_SCHEMA = "farms"
 )
 
 type CropRepositoryMongoAdapter struct{}
@@ -24,7 +21,7 @@ func (c CropRepositoryMongoAdapter) CreateCrop(crop *crop.Crop, farmId string) e
 
 	objectID, err := primitive.ObjectIDFromHex(farmId)
 
-	// I decided to do a addToSet because different from sql mongoDb recomends to store it nested in one schema
+	// I decided to use addToSet because, unlike SQL, MongoDB recommends storing it nested within a single schema.
 	filter := bson.M{"_id": objectID}
 	update := bson.M{
 		"$push": bson.M{
@@ -38,7 +35,7 @@ func (c CropRepositoryMongoAdapter) CreateCrop(crop *crop.Crop, farmId string) e
 
 	opts := options.Update().SetUpsert(true)
 
-	_, err = client.Collection(FARM_SCHEMA).UpdateOne(context.Background(), filter, update, opts)
+	_, err = client.Collection(shared.FARM_SCHEMA).UpdateOne(context.Background(), filter, update, opts)
 
 	if err != nil {
 		return err
