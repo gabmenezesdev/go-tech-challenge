@@ -21,6 +21,28 @@ func (f FarmDaoMongoDB) GetAllFarms(skip int, perPage int, filters FarmFilters) 
 		return []farm.FarmDto{}, err
 	}
 
+	// if filters.Name != "" {
+	// 	query += " AND name = ?"
+	// }
+	// if filters.LandArea != "" {
+	// 	query += " AND location = ?"
+	// }
+	// if filters.Unit != "" {
+	// 	query += " AND size >= ?"
+	// }
+	// if filters.Address != "" {
+	// 	query += " AND size <= ?"
+	// }
+	// if filters.CropType != "" {
+	// 	query += " AND is_organic = true"
+	// }
+	// if filters.IsIrrigated == true {
+	// 	query += " AND is_organic = true"
+	// }
+	// if filters.IsInsured == true {
+	// 	query += " AND is_organic = true"
+	// }
+
 	filter := bson.M{}
 
 	findOptions := options.Find()
