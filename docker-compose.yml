@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    environment:
+      MONGODB_URL: mongodb://mongo:27017/mydb
+      MONGODB_DATABASE: tech-test
+      APP_PORT: :3000
+    depends_on:
+      - mongo
+    command: go run cmd/main.go
+    working_dir: /app
+
+  mongo:
+    image: mongo:6
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
