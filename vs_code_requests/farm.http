@@ -1,0 +1,21 @@
+POST http://localhost:3000/api/v1/farm
+content-type: application/json
+
+{
+    "name": "criado-via-api",
+    "land_area": 48.5,
+    "unit": "acre",
+    "address": "120 teresina",
+    "crops": [
+        {
+            "crop_type": "BEANS",
+            "is_irrigated": true,
+            "is_insured": false
+        },
+        {
+            "crop_type": "CORN",
+            "is_irrigated": true,
+            "is_insured": false
+        }
+    ]
+}

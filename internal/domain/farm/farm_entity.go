@@ -19,7 +19,7 @@ type Farm struct {
 type FarmDto struct {
 	ID       string         `json:"id"`
 	Name     string         `json:"name"`
-	LandArea string         `json:"land_area"`
+	LandArea float64        `json:"land_area"`
 	Unit     string         `json:"unit"`
 	Address  string         `json:"address"`
 	Crops    []crop.CropDto `json:"crops"`
