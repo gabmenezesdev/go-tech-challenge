@@ -6,12 +6,10 @@ import (
 
 type FarmFilters struct {
 	Name        string
-	LandArea    string
 	Unit        string
-	Address     string
 	CropType    string
-	IsIrrigated bool
-	IsInsured   bool
+	IsIrrigated string
+	IsInsured   string
 }
 
 type FarmDao interface {

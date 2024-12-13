@@ -14,9 +14,9 @@ type Crop struct {
 }
 
 type CropDto struct {
-	CropType    string `json:"crop_type"`
-	IsIrrigated bool   `json:"is_irrigated"`
-	IsInsured   bool   `json:"is_insured"`
+	CropType    string `json:"crop_type" bson:"crop_type"`
+	IsIrrigated bool   `json:"is_irrigated" bson:"is_irrigated"`
+	IsInsured   bool   `json:"is_insured" bson:"is_insured"`
 }
 
 func NewCrop(cropType string, isIrrigated bool, isInsured bool) (*Crop, error) {

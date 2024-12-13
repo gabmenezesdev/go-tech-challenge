@@ -17,12 +17,12 @@ type Farm struct {
 }
 
 type FarmDto struct {
-	ID       string         `json:"id"`
-	Name     string         `json:"name"`
-	LandArea float64        `json:"land_area"`
-	Unit     string         `json:"unit"`
-	Address  string         `json:"address"`
-	Crops    []crop.CropDto `json:"crops"`
+	ID       string         `json:"_id" bson:"_id"`
+	Name     string         `json:"name" bson:"name"`
+	LandArea float64        `json:"land_area" bson:"land_area"`
+	Unit     string         `json:"unit" bson:"unit"`
+	Address  string         `json:"address" bson:"address"`
+	Crops    []crop.CropDto `json:"crops" bson:"crops"`
 }
 
 func createFarm(name string, landArea float64, unit, address string, crops []string) (*Farm, error) {
@@ -42,7 +42,7 @@ func createFarm(name string, landArea float64, unit, address string, crops []str
 	}
 
 	if len(address) == 0 {
-		return nil, errors.New("Invalid Address")
+		return nil, errors.New("INVALID_ADDRESS")
 	}
 
 	return &Farm{

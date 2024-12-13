@@ -22,4 +22,7 @@ content-type: application/json
 }
 
 ### Delete Farm
-DELETE http://localhost:3000/api/v1/farm/675b930234387eb5295995e8
+DELETE http://localhost:3000/api/v1/farm/675b9d55c9e77a1eff0945c0
+
+### Get Farms
+GET http://localhost:3000/api/v1/farm?skip=0&perpage=10
