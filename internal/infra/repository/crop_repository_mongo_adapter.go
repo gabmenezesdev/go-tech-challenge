@@ -20,6 +20,9 @@ func (c CropRepositoryMongoAdapter) CreateCrop(crop *crop.Crop, farmId string) e
 	}
 
 	objectID, err := primitive.ObjectIDFromHex(farmId)
+	if err != nil {
+		return err
+	}
 
 	// I decided to use addToSet because, unlike SQL, MongoDB recommends storing it nested within a single schema.
 	filter := bson.M{"_id": objectID}

@@ -32,7 +32,7 @@ func TestCreateFarm(t *testing.T) {
 			IsInsured:   true,
 		},
 	}
-	err = createFarmUseCase.Execute("MyFarm", 100.5, "acre", "123 Farm Address", crops)
+	err = createFarmUseCase.Execute("TestCreationFarm", 95.5, "acre", "Creation farm 123", crops)
 	if err != nil {
 		fmt.Println(err)
 		t.Error("Should Create a farm in database, but got error")
