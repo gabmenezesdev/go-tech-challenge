@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"log"
 
 	crop "github.com/gabmenezesdev/go-tech-challenge/internal/domain/crop"
 	"github.com/gabmenezesdev/go-tech-challenge/internal/infra/database"
@@ -44,9 +45,9 @@ func (c CropRepositoryMongoAdapter) CreateCrop(crop *crop.Crop, farmId string) e
 		return err
 	}
 
-	return nil
-}
+	if err := database.CloseConnection(); err != nil {
+		log.Fatalf("Failed to close database connection: %v", err)
+	}
 
-func (c CropRepositoryMongoAdapter) DeleteCropById(id int64) error {
 	return nil
 }

@@ -15,6 +15,8 @@ var (
 	MONGODB_DATABASE = "MONGODB_DATABASE"
 )
 
+var client *mongo.Client
+
 func InitConnection() (*mongo.Database, error) {
 	mongodbUri := os.Getenv(MONGODB_URL)
 	mongodbDatabase := os.Getenv(MONGODB_DATABASE)
@@ -35,5 +37,13 @@ func InitConnection() (*mongo.Database, error) {
 	}
 
 	return client.Database(mongodbDatabase), nil
+}
 
+func CloseConnection() error {
+	if client != nil {
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+		return client.Disconnect(ctx)
+	}
+	return nil
 }

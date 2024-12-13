@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"log"
 
 	farm "github.com/gabmenezesdev/go-tech-challenge/internal/domain/farm"
 	"github.com/gabmenezesdev/go-tech-challenge/internal/infra/database"
@@ -31,6 +32,10 @@ func (f FarmRepositoryMongoAdapter) CreateFarm(farm *farm.Farm) (string, error) 
 
 	id := res.InsertedID
 
+	if err := database.CloseConnection(); err != nil {
+		log.Fatalf("Failed to close database connection: %v", err)
+	}
+
 	return id.(primitive.ObjectID).Hex(), nil
 }
 
@@ -49,6 +54,10 @@ func (f FarmRepositoryMongoAdapter) DeleteFarmById(farmId string) error {
 	_, err = client.Collection(shared.FARM_SCHEMA).DeleteOne(context.Background(), filter)
 	if err != nil {
 		return err
+	}
+
+	if err := database.CloseConnection(); err != nil {
+		log.Fatalf("Failed to close database connection: %v", err)
 	}
 
 	return nil
@@ -72,6 +81,10 @@ func (f FarmRepositoryMongoAdapter) GetFarmById(farmId string) (farm.Farm, error
 		if err != nil {
 			return farm.Farm{}, err
 		}
+	}
+
+	if err := database.CloseConnection(); err != nil {
+		log.Fatalf("Failed to close database connection: %v", err)
 	}
 
 	return farmData, nil
