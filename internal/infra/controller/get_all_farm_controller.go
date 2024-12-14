@@ -11,7 +11,13 @@ import (
 	"go.uber.org/zap"
 )
 
-func GetAllFarmController(ctx *gin.Context) {
+func NewGetAllFarmController() *getAllFarmController {
+	return &getAllFarmController{}
+}
+
+type getAllFarmController struct{}
+
+func (gaf *getAllFarmController) Handle(ctx *gin.Context) {
 	skipStr := ctx.DefaultQuery("skip", "")
 	perPageStr := ctx.DefaultQuery("perpage", "")
 	name := ctx.DefaultQuery("name", "")

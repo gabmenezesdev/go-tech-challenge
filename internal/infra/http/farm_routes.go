@@ -6,10 +6,15 @@ import (
 )
 
 func InitRoutes(router *gin.Engine) {
+
+	createFarmController := controller.NewCreateFarmController()
+	deleteFarmController := controller.NewDeleteFarmController()
+	getAllFarmController := controller.NewGetAllFarmController()
+
 	farmRoutes := router.Group("api/v1/farm")
 	{
-		farmRoutes.GET("", controller.GetAllFarmController)
-		farmRoutes.POST("", controller.CreateFarmController)
-		farmRoutes.DELETE(":id", controller.DeleteFarmController)
+		farmRoutes.GET("", getAllFarmController.Handle)
+		farmRoutes.POST("", createFarmController.Handle)
+		farmRoutes.DELETE(":id", deleteFarmController.Handle)
 	}
 }

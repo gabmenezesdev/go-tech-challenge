@@ -10,7 +10,13 @@ import (
 	"go.uber.org/zap"
 )
 
-func DeleteFarmController(ctx *gin.Context) {
+func NewDeleteFarmController() *deleteFarmController {
+	return &deleteFarmController{}
+}
+
+type deleteFarmController struct{}
+
+func (dfc *deleteFarmController) Handle(ctx *gin.Context) {
 	id := ctx.Param("id")
 
 	if id == "" {

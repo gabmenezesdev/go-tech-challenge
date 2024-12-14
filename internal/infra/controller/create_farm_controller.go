@@ -11,7 +11,13 @@ import (
 	"go.uber.org/zap"
 )
 
-func CreateFarmController(ctx *gin.Context) {
+func NewCreateFarmController() *createFarmController {
+	return &createFarmController{}
+}
+
+type createFarmController struct{}
+
+func (cfc *createFarmController) Handle(ctx *gin.Context) {
 	shared.LoggerInfo("Received request to create farm")
 
 	var requestBody farm.FarmDto
