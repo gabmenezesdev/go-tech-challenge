@@ -7,18 +7,18 @@ import (
 	"go.uber.org/zap"
 )
 
-type GetAllFarm struct {
+type getAllFarm struct {
 	farmDao dao.FarmDao
 }
 
-func NewGetAllFarmsUseCase(farmDao dao.FarmDao) (*GetAllFarm, error) {
+func NewGetAllFarmsUseCase(farmDao dao.FarmDao) (*getAllFarm, error) {
 	shared.LoggerInfo("Initializing GetAllFarms use case")
-	return &GetAllFarm{
+	return &getAllFarm{
 		farmDao: farmDao,
 	}, nil
 }
 
-func (gaf *GetAllFarm) Execute(skip int, perPage int, filters dao.FarmFilters) ([]farm.FarmDto, error) {
+func (gaf *getAllFarm) Execute(skip int, perPage int, filters dao.FarmFilters) ([]farm.FarmDto, error) {
 	shared.LoggerInfo("Executing GetAllFarms use case",
 		zap.Int("skip", skip),
 		zap.Int("perPage", perPage),

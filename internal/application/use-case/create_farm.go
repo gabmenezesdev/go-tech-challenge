@@ -8,20 +8,20 @@ import (
 	"go.uber.org/zap"
 )
 
-type CreateFarm struct {
+type createFarm struct {
 	farmRepository repository.FarmRepository
 	cropRepository repository.CropRepository
 }
 
-func NewCreateFarmUseCase(farmRepository repository.FarmRepository, cropRepository repository.CropRepository) (*CreateFarm, error) {
+func NewCreateFarmUseCase(farmRepository repository.FarmRepository, cropRepository repository.CropRepository) (*createFarm, error) {
 	shared.LoggerInfo("Initializing CreateFarm use case")
-	return &CreateFarm{
+	return &createFarm{
 		farmRepository: farmRepository,
 		cropRepository: cropRepository,
 	}, nil
 }
 
-func (cf *CreateFarm) Execute(name string, landArea float64, unit string, address string, crops []crop.CropDto) error {
+func (cf *createFarm) Execute(name string, landArea float64, unit string, address string, crops []crop.CropDto) error {
 	shared.LoggerInfo("Starting create farm process", zap.String("farmName", name))
 
 	newFarm, err := farm.NewFarm(name, landArea, unit, address)

@@ -9,18 +9,18 @@ import (
 	"go.uber.org/zap"
 )
 
-type DeleteFarm struct {
+type deleteFarm struct {
 	farmRepository repository.FarmRepository
 }
 
-func NewDeleteFarmUseCase(farmRepository repository.FarmRepository) (*DeleteFarm, error) {
+func NewDeleteFarmUseCase(farmRepository repository.FarmRepository) (*deleteFarm, error) {
 	shared.LoggerInfo("Initializing DeleteFarm use case")
-	return &DeleteFarm{
+	return &deleteFarm{
 		farmRepository: farmRepository,
 	}, nil
 }
 
-func (df *DeleteFarm) Execute(farmId string) error {
+func (df *deleteFarm) Execute(farmId string) error {
 	shared.LoggerInfo("Executing DeleteFarm use case", zap.String("farmId", farmId))
 
 	_, err := df.farmRepository.GetFarmById(farmId)
