@@ -50,7 +50,7 @@ func (cfc *createFarmController) Handle(ctx *gin.Context) {
 	)
 	if err != nil {
 		shared.LoggerError("Error executing CreateFarmUseCase", err, zap.String("farmName", requestBody.Name))
-		ctx.JSON(http.StatusInternalServerError, gin.H{
+		ctx.JSON(http.StatusBadRequest, gin.H{
 			"message": "Error creating farm",
 			"details": err.Error(),
 		})
