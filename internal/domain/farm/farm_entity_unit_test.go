@@ -34,6 +34,13 @@ func TestNewFarm(t *testing.T) {
 	})
 
 	t.Run("Fail to Create Farm with Empty Address", func(t *testing.T) {
+		_, err := NewFarm("MyFarm", 100.5, "acre", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque cursus porta laoreet. Suspendisse nec mi ac velit pretium vehicula ac at velit. Integer turpis eros, sollicitudin id consectetur vel, dignissim eu velit. Aliquam gravida mattis leo, vitae sagittis odio viverra id. Duis non interdum mauris, ac dignissim ipsum. Etiam ornare eros libero, id placerat sem fringilla sed. Nulla in commodo nunc, ac fringilla dui. Duis at tempor est. Proin auctor mauris ipsum, scelerisque dignissim arcu pulvinar eu. Suspendisse eros lacus, porta vitae tincidunt eget, iaculis sit amet erat. Quisque at sapien velit. Aliquam nec velit a purus dignissim malesuada ac sollicitudin enim. Praesent ornare nunc augue, et condimentum nisi rhoncus id. Donec risus diam, sagittis non aliquam a, tristique ut.")
+		if err == nil {
+			t.Fatal("Expected error for empty address, got none")
+		}
+	})
+
+	t.Run("Fail to Create Farm with Empty Address", func(t *testing.T) {
 		_, err := NewFarm("MyFarm", 100.5, "acre", "")
 		if err == nil {
 			t.Fatal("Expected error for empty address, got none")

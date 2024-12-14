@@ -48,7 +48,12 @@ func createFarm(name string, landArea float64, unit, address string, crops []str
 
 	if len(address) == 0 {
 		shared.LoggerError("Invalid address provided", errors.New("INVALID_ADDRESS"))
-		return nil, errors.New("INVALID_ADDRESS")
+		return nil, errors.New("invalid address")
+	}
+
+	if len(address) > 150 {
+		shared.LoggerError("Invalid address provided", errors.New("INVALID_ADDRESS"))
+		return nil, errors.New("address is too long, exceeds the 150 character limit")
 	}
 
 	shared.LoggerInfo("Farm instance created successfully")
