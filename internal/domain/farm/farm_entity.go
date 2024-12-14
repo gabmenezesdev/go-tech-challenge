@@ -9,7 +9,7 @@ import (
 )
 
 type Farm struct {
-	id       int64
+	id       string
 	name     FarmName
 	landArea LandArea
 	unit     UnitOfMeasure
@@ -61,23 +61,23 @@ func createFarm(name string, landArea float64, unit, address string, crops []str
 	}, nil
 }
 
-func NewFarm(name string, landArea float64, unit, address string) (*Farm, error) {
+func NewFarm(name string, landArea float64, unit string, address string) (*Farm, error) {
 	shared.LoggerInfo("Creating new farm without crops")
 	return createFarm(name, landArea, unit, address, []string{})
 }
 
-func NewFarmWithID(farmId int64, name string, landArea float64, unit, address string, crops []string, createdAt time.Time) (*Farm, error) {
+func NewFarmWithID(farmId string, name string, landArea float64, unit, address string, crops []string, createdAt time.Time) (*Farm, error) {
 	farm, err := createFarm(name, landArea, unit, address, crops)
 	if err != nil {
 		shared.LoggerError("Error while creating farm with ID", err)
 		return nil, err
 	}
-	farm.id = farmId
+	farm.SetId(farmId)
 	shared.LoggerInfo("Farm with ID created successfully")
 	return farm, nil
 }
 
-func (f *Farm) GetID() int64 {
+func (f *Farm) GetID() string {
 	return f.id
 }
 
@@ -95,4 +95,8 @@ func (f *Farm) GetUnit() string {
 
 func (f *Farm) GetAddress() string {
 	return f.address
+}
+
+func (f *Farm) SetId(id string) {
+	f.id = id
 }
