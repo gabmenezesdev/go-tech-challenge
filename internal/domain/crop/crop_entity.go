@@ -1,6 +1,12 @@
 package crop
 
-// Although the crop currently doesn't fully satisfy the second rule of an entity, I believe it has the potential to be a domain entity.
+import (
+	"github.com/gabmenezesdev/go-tech-challenge/internal/shared"
+	"go.uber.org/zap"
+)
+
+// Although the crop currently doesn't fully satisfy the second rule of an entity,
+// I believe it has the potential to be a domain entity.
 
 // Unique Identifier: The crop has a unique id.
 // Independent Lifecycle: While not fully independent now, it can develop its own lifecycle with independent changes.
@@ -20,11 +26,15 @@ type CropDto struct {
 }
 
 func NewCrop(cropType string, isIrrigated bool, isInsured bool) (*Crop, error) {
+	shared.LoggerInfo("Creating new crop instance", zap.String("cropType", cropType))
+
 	newCropType, err := NewCropType(cropType)
 	if err != nil {
+		shared.LoggerError("Error while instantiating crop type", err)
 		return nil, err
 	}
 
+	shared.LoggerInfo("Crop instance created successfully")
 	return &Crop{
 		cropType:    newCropType,
 		isIrrigated: isIrrigated,
@@ -33,11 +43,15 @@ func NewCrop(cropType string, isIrrigated bool, isInsured bool) (*Crop, error) {
 }
 
 func NewCropWithId(cropId int64, cropType string, isIrrigated bool, isInsured bool) (*Crop, error) {
+	shared.LoggerInfo("Creating new crop instance with ID", zap.Int64("id", cropId), zap.String("cropType", cropType))
+
 	newCropType, err := NewCropType(cropType)
 	if err != nil {
+		shared.LoggerError("Error while instantiating crop type for crop with ID", err, zap.Int64("id", cropId))
 		return nil, err
 	}
 
+	shared.LoggerInfo("Crop with ID created successfully", zap.Int64("id", cropId))
 	return &Crop{
 		id:          cropId,
 		cropType:    newCropType,

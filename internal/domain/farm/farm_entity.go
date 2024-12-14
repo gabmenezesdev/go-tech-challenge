@@ -5,6 +5,7 @@ import (
 	"time"
 
 	crop "github.com/gabmenezesdev/go-tech-challenge/internal/domain/crop"
+	"github.com/gabmenezesdev/go-tech-challenge/internal/shared"
 )
 
 type Farm struct {
@@ -26,25 +27,31 @@ type FarmDto struct {
 }
 
 func createFarm(name string, landArea float64, unit, address string, crops []string) (*Farm, error) {
+	shared.LoggerInfo("Init create farm instance")
 	farmName, err := NewFarmName(name)
 	if err != nil {
+		shared.LoggerError("Error while instantiating farm name", err)
 		return nil, err
 	}
 
 	unitOfMeasure, err := newUnitOfMeasure(unit)
 	if err != nil {
+		shared.LoggerError("Error while instantiating unit of measure", err)
 		return nil, err
 	}
 
 	newLandArea, err := NewLandArea(landArea)
 	if err != nil {
+		shared.LoggerError("Error while instantiating land area", err)
 		return nil, err
 	}
 
 	if len(address) == 0 {
+		shared.LoggerError("Invalid address provided", errors.New("INVALID_ADDRESS"))
 		return nil, errors.New("INVALID_ADDRESS")
 	}
 
+	shared.LoggerInfo("Farm instance created successfully")
 	return &Farm{
 		name:     farmName,
 		landArea: newLandArea,
@@ -55,15 +62,18 @@ func createFarm(name string, landArea float64, unit, address string, crops []str
 }
 
 func NewFarm(name string, landArea float64, unit, address string) (*Farm, error) {
+	shared.LoggerInfo("Creating new farm without crops")
 	return createFarm(name, landArea, unit, address, []string{})
 }
 
 func NewFarmWithID(farmId int64, name string, landArea float64, unit, address string, crops []string, createdAt time.Time) (*Farm, error) {
 	farm, err := createFarm(name, landArea, unit, address, crops)
 	if err != nil {
+		shared.LoggerError("Error while creating farm with ID", err)
 		return nil, err
 	}
 	farm.id = farmId
+	shared.LoggerInfo("Farm with ID created successfully")
 	return farm, nil
 }
 

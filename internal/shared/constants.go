@@ -1,4 +1,4 @@
-package shared_test
+package shared
 
 var (
 	FARM_SCHEMA = "farms"

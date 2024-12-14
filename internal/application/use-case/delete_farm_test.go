@@ -15,6 +15,9 @@ func TestDeleteFarm(t *testing.T) {
 	farmMongoDbAdapter := repository.FarmRepositoryMongoAdapter{}
 
 	DeleteFarmUseCase, err := NewDeleteFarmUseCase(farmMongoDbAdapter)
+	if err != nil {
+		t.Error(err)
+	}
 
 	newFarm, err := farm.NewFarm("MyFarm", 100.5, "acre", "123 Farm Address")
 	if err != nil {
