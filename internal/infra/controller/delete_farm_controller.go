@@ -16,14 +16,25 @@ func NewDeleteFarmController() *deleteFarmController {
 
 type deleteFarmController struct{}
 
+// DeleteFarm Deletes a farm by its ID
+// @Summary Delete a farm by its ID
+// @Description This endpoint allows the deletion of an existing farm by providing its unique ID. If the farm is found, it will be deleted. If the farm is not found or an error occurs during deletion, appropriate error responses are returned.
+// @Tags Farm
+// @Accept json
+// @Produce json
+// @Param id path string true "Farm ID"
+// @Success 200 {object} shared.SuccessResponse "Successfully deleted farm"
+// @Failure 400 {object} shared.ErrorResponse "Bad Request: Farm ID is required or invalid"
+// @Failure 500 {object} shared.ErrorResponse "Internal Server Error: Error initializing or executing farm deletion"
+// @Router /farm/{id} [delete]
 func (dfc *deleteFarmController) Handle(ctx *gin.Context) {
 	id := ctx.Param("id")
 
 	if id == "" {
 		shared.LoggerError("Farm ID is required", nil)
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"message": "ID is required",
-			"details": "id not informed",
+		ctx.JSON(http.StatusBadRequest, shared.ErrorResponse{
+			Message: "ID is required",
+			Details: "id not informed",
 		})
 		return
 	}
@@ -35,9 +46,8 @@ func (dfc *deleteFarmController) Handle(ctx *gin.Context) {
 	deleteFarmUseCase, err := usecase.NewDeleteFarmUseCase(farmMongoDbAdapter)
 	if err != nil {
 		shared.LoggerError("Unable to initialize farm deletion use case", err, zap.String("farmId", id))
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Unable to initialize farm deletion use case",
-			"details": err.Error(),
+		ctx.JSON(http.StatusInternalServerError, shared.ErrorResponse{
+			Message: "Unable to initialize farm deletion use case",
 		})
 		return
 	}
@@ -45,15 +55,15 @@ func (dfc *deleteFarmController) Handle(ctx *gin.Context) {
 	err = deleteFarmUseCase.Execute(id)
 	if err != nil {
 		shared.LoggerError("Error occurred during farm deletion", err, zap.String("farmId", id))
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Error occurred during farm deletion",
-			"details": err.Error(),
+		ctx.JSON(http.StatusInternalServerError, shared.ErrorResponse{
+			Message: "Error occurred during farm deletion",
+			Details: err.Error(),
 		})
 		return
 	}
 
 	shared.LoggerInfo("Farm deleted successfully", zap.String("farmId", id))
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "Farm deleted successfully!",
+	ctx.JSON(http.StatusOK, shared.SuccessResponse{
+		Message: "Farm deleted successfully!",
 	})
 }

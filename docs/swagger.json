@@ -1,0 +1,247 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "Tech challenge API",
+        "title": "GO-TECH-CHALLENGE",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "paths": {
+        "/farm": {
+            "get": {
+                "description": "This endpoint allows the retrieval of a list of farms, with optional query parameters for filtering by name, unit, crop type, and land area. The response supports pagination with the 'skip' and 'perpage' parameters. If no farms are found, an empty array will be returned. If the required parameters are missing or invalid, appropriate error responses will be returned.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Farm"
+                ],
+                "summary": "Retrieve a list of farms with optional filters",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Number of items to skip for pagination",
+                        "name": "skip",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of items per page for pagination",
+                        "name": "perpage",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Name of the farm",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Unit for land area",
+                        "name": "unit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Type of crop grown on the farm",
+                        "name": "croptype",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Initial land area for filtering",
+                        "name": "landareainit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Limit land area for filtering",
+                        "name": "landarealimit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of farms retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/shared.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request: Missing or invalid query parameters",
+                        "schema": {
+                            "$ref": "#/definitions/shared.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error: Error retrieving farms",
+                        "schema": {
+                            "$ref": "#/definitions/shared.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "This endpoint allows the creation of a new farm by providing the necessary details.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Farm"
+                ],
+                "summary": "Create a new farm",
+                "parameters": [
+                    {
+                        "description": "Farm Information",
+                        "name": "requestBody",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/farm.FarmDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successfully created farm",
+                        "schema": {
+                            "$ref": "#/definitions/shared.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request: Invalid request payload",
+                        "schema": {
+                            "$ref": "#/definitions/shared.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error: Error initializing or executing farm creation process",
+                        "schema": {
+                            "$ref": "#/definitions/shared.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/farm/{id}": {
+            "delete": {
+                "description": "This endpoint allows the deletion of an existing farm by providing its unique ID. If the farm is found, it will be deleted. If the farm is not found or an error occurs during deletion, appropriate error responses are returned.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Farm"
+                ],
+                "summary": "Delete a farm by its ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Farm ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted farm",
+                        "schema": {
+                            "$ref": "#/definitions/shared.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request: Farm ID is required or invalid",
+                        "schema": {
+                            "$ref": "#/definitions/shared.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error: Error initializing or executing farm deletion",
+                        "schema": {
+                            "$ref": "#/definitions/shared.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "crop.CropDto": {
+            "type": "object",
+            "properties": {
+                "crop_type": {
+                    "type": "string"
+                },
+                "is_insured": {
+                    "type": "boolean"
+                },
+                "is_irrigated": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "farm.FarmDto": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "crops": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/crop.CropDto"
+                    }
+                },
+                "land_area": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "unit": {
+                    "type": "string"
+                }
+            }
+        },
+        "shared.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "details": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "shared.SuccessResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
