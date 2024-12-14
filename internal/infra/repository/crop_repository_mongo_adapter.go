@@ -17,11 +17,15 @@ type CropRepositoryMongoAdapter struct{}
 func (c CropRepositoryMongoAdapter) CreateCrop(crop *crop.Crop, farmId string) error {
 	client, err := database.InitConnection()
 	if err != nil {
+		shared.LoggerError("Error initializing database connection", err)
 		return err
 	}
 
+	shared.LoggerInfo("Database connection established")
+
 	objectID, err := primitive.ObjectIDFromHex(farmId)
 	if err != nil {
+		shared.LoggerError("Error converting farmId to ObjectID", err)
 		return err
 	}
 
@@ -40,14 +44,19 @@ func (c CropRepositoryMongoAdapter) CreateCrop(crop *crop.Crop, farmId string) e
 	opts := options.Update().SetUpsert(true)
 
 	_, err = client.Collection(shared.FARM_SCHEMA).UpdateOne(context.Background(), filter, update, opts)
-
 	if err != nil {
+		shared.LoggerError("Error updating crop information in MongoDB", err)
 		return err
 	}
 
+	shared.LoggerInfo("Crop added to farm successfully")
+
 	if err := database.CloseConnection(); err != nil {
+		shared.LoggerError("Failed to close database connection", err)
 		log.Fatalf("Failed to close database connection: %v", err)
 	}
+
+	shared.LoggerInfo("Database connection closed")
 
 	return nil
 }

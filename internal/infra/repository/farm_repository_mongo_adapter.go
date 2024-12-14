@@ -16,8 +16,11 @@ type FarmRepositoryMongoAdapter struct{}
 func (f FarmRepositoryMongoAdapter) CreateFarm(farm *farm.Farm) (string, error) {
 	client, err := database.InitConnection()
 	if err != nil {
+		shared.LoggerError("Error initializing database connection", err)
 		return "", err
 	}
+
+	shared.LoggerInfo("Database connection established")
 
 	res, err := client.Collection(shared.FARM_SCHEMA).InsertOne(context.Background(), bson.M{
 		"name":      farm.GetName(),
@@ -27,14 +30,18 @@ func (f FarmRepositoryMongoAdapter) CreateFarm(farm *farm.Farm) (string, error) 
 		"crops":     []interface{}{},
 	})
 	if err != nil {
+		shared.LoggerError("Error inserting farm into database", err)
 		return "", err
 	}
 
 	id := res.InsertedID
 
 	if err := database.CloseConnection(); err != nil {
+		shared.LoggerError("Failed to close database connection", err)
 		log.Fatalf("Failed to close database connection: %v", err)
 	}
+
+	shared.LoggerInfo("Database connection closed")
 
 	return id.(primitive.ObjectID).Hex(), nil
 }
@@ -42,10 +49,15 @@ func (f FarmRepositoryMongoAdapter) CreateFarm(farm *farm.Farm) (string, error) 
 func (f FarmRepositoryMongoAdapter) DeleteFarmById(farmId string) error {
 	client, err := database.InitConnection()
 	if err != nil {
+		shared.LoggerError("Error initializing database connection", err)
 		return err
 	}
+
+	shared.LoggerInfo("Database connection established")
+
 	objectID, err := primitive.ObjectIDFromHex(farmId)
 	if err != nil {
+		shared.LoggerError("Error converting farmId to ObjectID", err)
 		return err
 	}
 
@@ -53,12 +65,18 @@ func (f FarmRepositoryMongoAdapter) DeleteFarmById(farmId string) error {
 
 	_, err = client.Collection(shared.FARM_SCHEMA).DeleteOne(context.Background(), filter)
 	if err != nil {
+		shared.LoggerError("Error deleting farm from database", err)
 		return err
 	}
 
+	shared.LoggerInfo("Farm deleted successfully")
+
 	if err := database.CloseConnection(); err != nil {
+		shared.LoggerError("Failed to close database connection", err)
 		log.Fatalf("Failed to close database connection: %v", err)
 	}
+
+	shared.LoggerInfo("Database connection closed")
 
 	return nil
 }
@@ -66,10 +84,15 @@ func (f FarmRepositoryMongoAdapter) DeleteFarmById(farmId string) error {
 func (f FarmRepositoryMongoAdapter) GetFarmById(farmId string) (farm.Farm, error) {
 	client, err := database.InitConnection()
 	if err != nil {
+		shared.LoggerError("Error initializing database connection", err)
 		return farm.Farm{}, err
 	}
+
+	shared.LoggerInfo("Database connection established")
+
 	objectID, err := primitive.ObjectIDFromHex(farmId)
 	if err != nil {
+		shared.LoggerError("Error converting farmId to ObjectID", err)
 		return farm.Farm{}, err
 	}
 
@@ -78,14 +101,18 @@ func (f FarmRepositoryMongoAdapter) GetFarmById(farmId string) (farm.Farm, error
 	var farmData farm.Farm
 	err = client.Collection(shared.FARM_SCHEMA).FindOne(context.Background(), filter).Decode(&farmData)
 	if err != nil {
-		if err != nil {
-			return farm.Farm{}, err
-		}
+		shared.LoggerError("Error finding farm by ID in database", err)
+		return farm.Farm{}, err
 	}
 
+	shared.LoggerInfo("Farm retrieved successfully")
+
 	if err := database.CloseConnection(); err != nil {
+		shared.LoggerError("Failed to close database connection", err)
 		log.Fatalf("Failed to close database connection: %v", err)
 	}
+
+	shared.LoggerInfo("Database connection closed")
 
 	return farmData, nil
 }

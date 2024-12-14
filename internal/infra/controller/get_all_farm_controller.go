@@ -6,7 +6,9 @@ import (
 
 	farm "github.com/gabmenezesdev/go-tech-challenge/internal/application/use-case"
 	dao "github.com/gabmenezesdev/go-tech-challenge/internal/infra/DAO"
+	"github.com/gabmenezesdev/go-tech-challenge/internal/shared"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 func GetAllFarmController(ctx *gin.Context) {
@@ -19,6 +21,7 @@ func GetAllFarmController(ctx *gin.Context) {
 	isinsured := ctx.DefaultQuery("isinsured", "")
 
 	if skipStr == "" || perPageStr == "" {
+		shared.LoggerError("Missing query parameters", nil, zap.String("skip", skipStr), zap.String("perpage", perPageStr))
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"message": "Both 'skip' and 'perpage' query parameters are required",
 		})
@@ -27,6 +30,7 @@ func GetAllFarmController(ctx *gin.Context) {
 
 	skip, err := strconv.Atoi(skipStr)
 	if err != nil {
+		shared.LoggerError("Error converting 'skip' parameter", err, zap.String("skip", skipStr))
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"message": "'skip' must be an integer",
 		})
@@ -35,6 +39,7 @@ func GetAllFarmController(ctx *gin.Context) {
 
 	perPage, err := strconv.Atoi(perPageStr)
 	if err != nil {
+		shared.LoggerError("Error converting 'perpage' parameter", err, zap.String("perpage", perPageStr))
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"message": "'perpage' must be an integer",
 		})
@@ -44,6 +49,7 @@ func GetAllFarmController(ctx *gin.Context) {
 	farmMongoDbAdapterDAO := dao.FarmDaoMongoDB{}
 	NewGetAllFarmsUseCase, err := farm.NewGetAllFarmsUseCase(farmMongoDbAdapterDAO)
 	if err != nil {
+		shared.LoggerError("Error initializing farm retrieval use case", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error during farm retrieval",
 		})
@@ -60,11 +66,14 @@ func GetAllFarmController(ctx *gin.Context) {
 
 	foundFarms, err := NewGetAllFarmsUseCase.Execute(skip, perPage, farmFilters)
 	if err != nil {
+		shared.LoggerError("Error retrieving farms", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error during farm get",
 		})
 		return
 	}
+
+	shared.LoggerInfo("Farms retrieved successfully", zap.Int("totalFarms", len(foundFarms)))
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"skip":    skip,

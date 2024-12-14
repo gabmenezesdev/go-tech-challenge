@@ -8,18 +8,20 @@ import (
 	shared "github.com/gabmenezesdev/go-tech-challenge/internal/shared"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.uber.org/zap"
 )
 
 // Using the CQRS pattern, we create a separate query as it is more optimized for finding data.
 // Since the query doesn't manipulate a domain (i.e., it doesn't receive, process, or modify entity), a DAO is more appropriate.
-
 type FarmDaoMongoDB struct{}
 
 func (f FarmDaoMongoDB) GetAllFarms(skip int, perPage int, filters FarmFilters) ([]farm.FarmDto, error) {
 	client, err := database.InitConnection()
 	if err != nil {
+		shared.LoggerError("Error initializing database connection", err)
 		return []farm.FarmDto{}, err
 	}
+	shared.LoggerInfo("Database connection established")
 
 	// if filters.Name != "" {
 	// 	query += " AND name = ?"
@@ -51,14 +53,18 @@ func (f FarmDaoMongoDB) GetAllFarms(skip int, perPage int, filters FarmFilters) 
 
 	cursor, err := client.Collection(shared.FARM_SCHEMA).Find(context.Background(), filter, findOptions)
 	if err != nil {
+		shared.LoggerError("Error executing MongoDB query", err)
 		return []farm.FarmDto{}, err
 	}
 	defer cursor.Close(context.Background())
 
 	var farmData []farm.FarmDto
 	if err := cursor.All(context.Background(), &farmData); err != nil {
+		shared.LoggerError("Error retrieving farm data from cursor", err)
 		return []farm.FarmDto{}, err
 	}
+
+	shared.LoggerInfo("Farm data successfully retrieved", zap.Int("totalFarms", len(farmData)))
 
 	return farmData, nil
 }
