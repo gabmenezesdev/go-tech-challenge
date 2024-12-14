@@ -17,6 +17,7 @@ func DeleteFarmController(ctx *gin.Context) {
 		shared.LoggerError("Farm ID is required", nil)
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"message": "ID is required",
+			"details": "id not informed",
 		})
 		return
 	}
@@ -30,6 +31,7 @@ func DeleteFarmController(ctx *gin.Context) {
 		shared.LoggerError("Unable to initialize farm deletion use case", err, zap.String("farmId", id))
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Unable to initialize farm deletion use case",
+			"details": err.Error(),
 		})
 		return
 	}
@@ -39,6 +41,7 @@ func DeleteFarmController(ctx *gin.Context) {
 		shared.LoggerError("Error occurred during farm deletion", err, zap.String("farmId", id))
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error occurred during farm deletion",
+			"details": err.Error(),
 		})
 		return
 	}

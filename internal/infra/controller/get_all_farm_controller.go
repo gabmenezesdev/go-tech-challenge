@@ -24,6 +24,7 @@ func GetAllFarmController(ctx *gin.Context) {
 		shared.LoggerError("Missing query parameters", nil, zap.String("skip", skipStr), zap.String("perpage", perPageStr))
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"message": "Both 'skip' and 'perpage' query parameters are required",
+			"details": "'skip' or 'perpage' not informed",
 		})
 		return
 	}
@@ -33,6 +34,7 @@ func GetAllFarmController(ctx *gin.Context) {
 		shared.LoggerError("Error converting 'skip' parameter", err, zap.String("skip", skipStr))
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"message": "'skip' must be an integer",
+			"details": err.Error(),
 		})
 		return
 	}
@@ -42,6 +44,7 @@ func GetAllFarmController(ctx *gin.Context) {
 		shared.LoggerError("Error converting 'perpage' parameter", err, zap.String("perpage", perPageStr))
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"message": "'perpage' must be an integer",
+			"details": err.Error(),
 		})
 		return
 	}
@@ -52,6 +55,7 @@ func GetAllFarmController(ctx *gin.Context) {
 		shared.LoggerError("Error initializing farm retrieval use case", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error during farm retrieval",
+			"details": err.Error(),
 		})
 		return
 	}
@@ -69,6 +73,7 @@ func GetAllFarmController(ctx *gin.Context) {
 		shared.LoggerError("Error retrieving farms", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error during farm get",
+			"details": err.Error(),
 		})
 		return
 	}
