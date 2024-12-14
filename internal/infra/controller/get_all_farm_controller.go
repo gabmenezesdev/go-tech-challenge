@@ -23,6 +23,8 @@ func (gaf *getAllFarmController) Handle(ctx *gin.Context) {
 	name := ctx.DefaultQuery("name", "")
 	unit := ctx.DefaultQuery("unit", "")
 	croptype := ctx.DefaultQuery("croptype", "")
+	landAreaInit := ctx.DefaultQuery("landareainit", "")
+	landAreaLimit := ctx.DefaultQuery("landarealimit", "")
 
 	if skipStr == "" || perPageStr == "" {
 		shared.LoggerError("Missing query parameters", nil, zap.String("skip", skipStr), zap.String("perpage", perPageStr))
@@ -65,9 +67,11 @@ func (gaf *getAllFarmController) Handle(ctx *gin.Context) {
 	}
 
 	farmFilters := dao.FarmFilters{
-		Name:     name,
-		Unit:     unit,
-		CropType: croptype,
+		Name:          name,
+		Unit:          unit,
+		CropType:      croptype,
+		LandAreaLimit: landAreaLimit,
+		LandAreaInit:  landAreaInit,
 	}
 
 	foundFarms, err := NewGetAllFarmsUseCase.Execute(skip, perPage, farmFilters)

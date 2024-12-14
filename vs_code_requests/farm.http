@@ -42,3 +42,9 @@ GET http://localhost:3000/api/v1/farm?skip=0&perpage=10&name=cri
 
 ### Get Farms filter unit
 GET http://localhost:3000/api/v1/farm?skip=0&perpage=10&unit=square_km
+
+### Get Farms filter landArea
+GET http://localhost:3000/api/v1/farm?skip=0&perpage=10&landarealimit=60&landareainit=50
+
+### Get Farms filter landArea
+GET http://localhost:3000/api/v1/farm?skip=0&perpage=10&landarealimit=60
