@@ -112,7 +112,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/farm.FarmDto"
+                            "$ref": "#/definitions/farm.CreateFarmDto"
                         }
                     }
                 ],
@@ -198,12 +198,9 @@ const docTemplate = `{
                 }
             }
         },
-        "farm.FarmDto": {
+        "farm.CreateFarmDto": {
             "type": "object",
             "properties": {
-                "_id": {
-                    "type": "string"
-                },
                 "address": {
                     "type": "string"
                 },

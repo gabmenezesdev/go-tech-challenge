@@ -109,7 +109,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/farm.FarmDto"
+                            "$ref": "#/definitions/farm.CreateFarmDto"
                         }
                     }
                 ],
@@ -195,12 +195,9 @@
                 }
             }
         },
-        "farm.FarmDto": {
+        "farm.CreateFarmDto": {
             "type": "object",
             "properties": {
-                "_id": {
-                    "type": "string"
-                },
                 "address": {
                     "type": "string"
                 },

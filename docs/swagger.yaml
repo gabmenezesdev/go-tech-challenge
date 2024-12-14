@@ -9,10 +9,8 @@ definitions:
       is_irrigated:
         type: boolean
     type: object
-  farm.FarmDto:
+  farm.CreateFarmDto:
     properties:
-      _id:
-        type: string
       address:
         type: string
       crops:
@@ -114,7 +112,7 @@ paths:
         name: requestBody
         required: true
         schema:
-          $ref: '#/definitions/farm.FarmDto'
+          $ref: '#/definitions/farm.CreateFarmDto'
       produces:
       - application/json
       responses:

@@ -23,7 +23,7 @@ type createFarmController struct{}
 // @Tags Farm
 // @Accept json
 // @Produce json
-// @Param requestBody body farm.FarmDto true "Farm Information"
+// @Param requestBody body farm.CreateFarmDto true "Farm Information"
 // @Success 201 {object} shared.SuccessResponse "Successfully created farm"
 // @Failure 400 {object} shared.ErrorResponse "Bad Request: Invalid request payload"
 // @Failure 500 {object} shared.ErrorResponse "Internal Server Error: Error initializing or executing farm creation process"
@@ -31,7 +31,7 @@ type createFarmController struct{}
 func (cfc *createFarmController) Handle(ctx *gin.Context) {
 	shared.LoggerInfo("Received request to create farm")
 
-	var requestBody farm.FarmDto
+	var requestBody farm.CreateFarmDto
 	if err := ctx.BindJSON(&requestBody); err != nil {
 		shared.LoggerError("Invalid request payload", err)
 		ctx.JSON(http.StatusBadRequest, shared.ErrorResponse{Message: "Invalid request payload"})
