@@ -23,29 +23,17 @@ func (f FarmDaoMongoDB) GetAllFarms(skip int, perPage int, filters FarmFilters) 
 	}
 	shared.LoggerInfo("Database connection established")
 
-	// if filters.Name != "" {
-	// 	query += " AND name = ?"
-	// }
-	// if filters.LandArea != "" {
-	// 	query += " AND location = ?"
-	// }
-	// if filters.Unit != "" {
-	// 	query += " AND size >= ?"
-	// }
-	// if filters.Address != "" {
-	// 	query += " AND size <= ?"
-	// }
-	// if filters.CropType != "" {
-	// 	query += " AND is_organic = true"
-	// }
-	// if filters.IsIrrigated == true {
-	// 	query += " AND is_organic = true"
-	// }
-	// if filters.IsInsured == true {
-	// 	query += " AND is_organic = true"
-	// }
-
 	filter := bson.M{}
+
+	if filters.Name != "" {
+		filter["name"] = bson.M{"$regex": "^" + filters.Name, "$options": "i"}
+	}
+	if filters.Unit != "" {
+		filter["unit"] = filters.Unit
+	}
+	if filters.CropType != "" {
+		filter["crops.crop_type"] = filters.CropType
+	}
 
 	findOptions := options.Find()
 	findOptions.SetSkip(int64(skip))

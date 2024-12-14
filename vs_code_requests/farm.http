@@ -1,22 +1,29 @@
+    # croptype
+	# UnitAcre     = "acre"
+	# UnitHectare  = "hectare"
+	# UnitSquareKm = "square_km"
+
+    # croptype
+	# Rice     = "RICE"
+	# Beans    = "BEANS"
+	# Corn     = "CORN"
+	# Coffee   = "COFFEE"
+	# Soybeans = "SOYBEANS"
+
 ### Create Farm
 POST http://localhost:3000/api/v1/farm
 content-type: application/json
 
 {
-    "name": "criado-via-api",
+    "name": "criado",
     "land_area": 48.5,
     "unit": "acre",
     "address": "120 teresina",
     "crops": [
         {
-            "crop_type": "BEANS",
+            "crop_type": "COFFEE",
             "is_irrigated": true,
-            "is_insured": false
-        },
-        {
-            "crop_type": "CORN",
-            "is_irrigated": true,
-            "is_insured": false
+            "is_insured": true
         }
     ]
 }
@@ -26,3 +33,12 @@ DELETE http://localhost:3000/api/v1/farm/675b9d55c9e77a1eff0945c0
 
 ### Get Farms
 GET http://localhost:3000/api/v1/farm?skip=0&perpage=10
+
+### Get Farms filter croptype
+GET http://localhost:3000/api/v1/farm?skip=0&perpage=10&croptype=COFFEE
+
+### Get Farms filter name
+GET http://localhost:3000/api/v1/farm?skip=0&perpage=10&name=cri
+
+### Get Farms filter unit
+GET http://localhost:3000/api/v1/farm?skip=0&perpage=10&unit=square_km

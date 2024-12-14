@@ -5,11 +5,9 @@ import (
 )
 
 type FarmFilters struct {
-	Name        string
-	Unit        string
-	CropType    string
-	IsIrrigated string
-	IsInsured   string
+	Name     string
+	Unit     string
+	CropType string
 }
 
 type FarmDao interface {

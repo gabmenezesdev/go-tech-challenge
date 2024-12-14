@@ -10,7 +10,7 @@ const (
 	Rice     = "RICE"
 	Beans    = "BEANS"
 	Corn     = "CORN"
-	Coffee   = "coffee"
+	Coffee   = "COFFEE"
 	Soybeans = "SOYBEANS"
 )
 

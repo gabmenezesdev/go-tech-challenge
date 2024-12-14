@@ -26,7 +26,7 @@ type FarmDto struct {
 	Crops    []crop.CropDto `json:"crops" bson:"crops"`
 }
 
-func createFarm(name string, landArea float64, unit, address string, crops []string) (*Farm, error) {
+func createFarm(name string, landArea float64, unit string, address string, crops []string) (*Farm, error) {
 	shared.LoggerInfo("Init create farm instance")
 	farmName, err := NewFarmName(name)
 	if err != nil {

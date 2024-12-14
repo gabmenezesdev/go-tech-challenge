@@ -21,10 +21,8 @@ func (gaf *getAllFarmController) Handle(ctx *gin.Context) {
 	skipStr := ctx.DefaultQuery("skip", "")
 	perPageStr := ctx.DefaultQuery("perpage", "")
 	name := ctx.DefaultQuery("name", "")
-	unit := ctx.DefaultQuery("skip", "")
+	unit := ctx.DefaultQuery("unit", "")
 	croptype := ctx.DefaultQuery("croptype", "")
-	isirrigated := ctx.DefaultQuery("isirrigated", "")
-	isinsured := ctx.DefaultQuery("isinsured", "")
 
 	if skipStr == "" || perPageStr == "" {
 		shared.LoggerError("Missing query parameters", nil, zap.String("skip", skipStr), zap.String("perpage", perPageStr))
@@ -67,11 +65,9 @@ func (gaf *getAllFarmController) Handle(ctx *gin.Context) {
 	}
 
 	farmFilters := dao.FarmFilters{
-		Name:        name,
-		Unit:        unit,
-		CropType:    croptype,
-		IsIrrigated: isirrigated,
-		IsInsured:   isinsured,
+		Name:     name,
+		Unit:     unit,
+		CropType: croptype,
 	}
 
 	foundFarms, err := NewGetAllFarmsUseCase.Execute(skip, perPage, farmFilters)
@@ -85,6 +81,16 @@ func (gaf *getAllFarmController) Handle(ctx *gin.Context) {
 	}
 
 	shared.LoggerInfo("Farms retrieved successfully", zap.Int("totalFarms", len(foundFarms)))
+
+	if len(foundFarms) == 0 {
+		ctx.JSON(http.StatusOK, gin.H{
+			"skip":    skip,
+			"perpage": perPage,
+			"message": "Farms got successfully!",
+			"data":    [0]int{},
+		})
+		return
+	}
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"skip":    skip,
