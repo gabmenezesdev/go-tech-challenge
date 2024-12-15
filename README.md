@@ -29,8 +29,6 @@
 
 ## Running Locally
 
-### **Option 1: Using Docker Compose**
-
 ### Option 1: Using Docker Compose
 
 1. **Clone the repository**:
@@ -39,7 +37,13 @@
     cd go-tech-challenge
     ```
 
-2. **Build and start the application with Docker Compose**:
+2. **Set up your environment variables**:
+    ```bash
+    cp .env.example .env
+    ```
+    - Adjust the values in `.env` as needed (e.g., MongoDB connection details).
+
+3. **Build and start the application with Docker Compose**:
     ```bash
     docker-compose up --build
     ```
@@ -48,9 +52,11 @@
     docker compose up --build
     ```
 
-3. **Access the application**: Once the Docker containers are up and running, the application will be accessible on `http://localhost:3000`.
+4. **Access the application**: Once the Docker containers are up and running, the application will be accessible on `http://localhost:3000`.
 
-4. **Stop the application**:
+5. **Access the docs**: Access `http://localhost:3000/swagger/index.html` to see the docs and test the api.
+
+6. **Stop the application**:
     ```bash
     docker-compose down
     ```
@@ -88,6 +94,8 @@
 
 5. **Access the application**: The application will be available at `http://localhost:3000`.
 
+6. **Access the docs**: Access `http://localhost:3000/swagger/index.html` to see the docs and test the api.
+
 ### Notes
 
 - The application depends on MongoDB. If you haven't set up MongoDB locally, you can run it using Docker or connect to a remote MongoDB instance by adjusting the `.env` file.
@@ -99,26 +107,30 @@
 1. **Build the application**:
     - **Windows**:
     ```bash
-    GOOS=windows GOARCH=amd64 go build -o app.exe
+    GOOS=windows GOARCH=amd64 go build -o ./build/app-windows.exe ./cmd/main.go
     ```
     - **Linux**:
     ```bash
-    GOOS=linux GOARCH=amd64 go build -o app-linux
+    GOOS=linux GOARCH=amd64 go build -o ./build/app-linux ./cmd/main.go
     ```
     - **Mac**:
     ```bash
-    GOOS=darwin GOARCH=amd64 go build -o app-darwin
+    GOOS=darwin GOARCH=amd64 go build -o ./build/app-mac ./cmd/main.go
     ```
 
 2. **Place the `.env` file**:  
    After building the application, ensure that the `.env` file is in the same directory as the executable or in a directory where your application can access it. The `.env` file should contain any required environment variables for the application to run correctly.
+
+    ```bash
+    cp .env ./build/.env
+    ```
 
 3. **Execute the app**:  
    Run the built application from the command line. Make sure you are in the same directory as the executable or provide the correct path to the executable.
 
     - **Windows**:
     ```bash
-    ./app.exe
+    ./app-windows.exe
     ```
     - **Linux**:
     ```bash
@@ -126,7 +138,7 @@
     ```
     - **Mac**:
     ```bash
-    ./app-darwin
+    ./app-mac
     ```
 
 4. **Access the application**:  
@@ -148,6 +160,10 @@
 To run all tests (including unit and integration tests), use the following command:
 
 ```bash
+docker-compose up --build
+```
+
+```bash
 go test ./... -v
 ```
 
@@ -160,5 +176,5 @@ go test ./internal/application/use-case -v
 ### Run Unit Tests
 
 ```bash
-go test ./internal/domain -v
+go test ./internal/domain/... -v
 ```
