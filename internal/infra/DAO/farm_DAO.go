@@ -2,6 +2,7 @@ package dao
 
 import (
 	"context"
+	"regexp"
 	"strconv"
 
 	"github.com/gabmenezesdev/go-tech-challenge/internal/domain/farm"
@@ -27,7 +28,8 @@ func (f FarmDaoMongoDB) GetAllFarms(skip int, perPage int, filters FarmFilters) 
 	filter := bson.M{}
 
 	if filters.Name != "" {
-		filter["name"] = bson.M{"$regex": "^" + filters.Name, "$options": "i"}
+		safeName := regexp.QuoteMeta(filters.Name)
+		filter["name"] = bson.M{"$regex": "^" + safeName, "$options": "i"}
 	}
 	if filters.Unit != "" {
 		filter["unit"] = filters.Unit
